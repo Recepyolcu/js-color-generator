@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+
+        <div class="block">
+            <h1>Color</h1>
+            <span style="text-align: center; line-height: 2;" id="demo"></span>
+            <canvas width="600" height="600"></canvas>
+        </div>
+    
+        <div class="block">
+            <h1>Your Colors</h1>
+            <button>Generate new colors</button>
+            <div id="colors-block"></div>
+        </div>
+
+    </div>
+
+    <script>
+
+        let colorText = document.getElementById("demo");
+        let btn = document.querySelector("button");
+        
+        const rgb = ["255","255","255"];
+        const rgbCollection = [];
+        const hexCollection = [];
+
+        let canv = document.querySelector('canvas');
+        let context = canv.getContext('2d');
+        
+        let rgbText = "";
+        let hexText = "";
+
+        function rgbToHex(r, g, b) {
+            return((r.toString(16)) + (g.toString(16)) + (b.toString(16)));
+        }
+
+        function createColorElement(backgroundColor, colorText, textColor) {
+            //color blok's parent div
+            let parent = document.getElementById("colors-block");
+
+            //create block and text
+            let colorBlock = document.createElement("div"); 
+            let colorBlockText = document.createElement("p");
+            let colorBlockanchor = document.createElement("a");
+            
+            colorBlockanchor.addEventListener("click", function() {
+                context.fillStyle = backgroundColor;
+                context.fillRect(100, 100, 400, 400);
+            });
+            //create class and set
+
+            let blockAttr = document.createAttribute("class");
+            blockAttr.value = "colorBlock";
+            colorBlock.setAttributeNode(blockAttr);
+
+            //styling
+            colorBlock.style.backgroundColor = backgroundColor;
+            colorBlockText.innerHTML = colorText;
+            colorBlockText.style.color = textColor;
+
+            //append elements
+            colorBlockanchor.appendChild(colorBlock);
+            colorBlock.appendChild(colorBlockText);
+            parent.appendChild(colorBlockanchor);
+        }
+
+        function replaceColor(bg) {
+            context.fillStyle = bg;
+            context.fillRect(100, 100, 400, 400);
+        }
+        
+        btn.addEventListener("click", function() {
+            rgbText = "rgb(";
+            hexText = "#";
+            for (let i = 0; i < rgb.length; i++) {
+                rgb[i] = Math.floor(Math.random() * 256);
+                rgbText += rgb[i] + ",";
+            }
+    
+            hexText += rgbToHex(rgb[0], rgb[1], rgb[2]);
+
+            
+            rgbText = rgbText.slice(0, -1);
+            rgbText += ")";
+            
+            rgbCollection.push(rgbText);
+            hexCollection.push(hexText);
+            
+            context.fillStyle = hexText;
+            context.fillRect(100, 100, 400, 400);
+            colorText.innerHTML = "RGB: " + rgbText + "<br> Hex: " + hexText;
+            if (((rgb[0] + rgb[1] + rgb[2])/ 3) < (255)/2) {
+                createColorElement(rgbText, colorText.innerHTML, "white");
+            }
+            else {
+                createColorElement(rgbText, colorText.innerHTML, "black");
+            }
+        });
+
+
+    </script>
+</body>
+</html>
