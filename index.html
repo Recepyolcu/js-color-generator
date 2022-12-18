@@ -52,12 +52,9 @@
             let colorBlockText = document.createElement("p");
             let colorBlockanchor = document.createElement("a");
             
-            colorBlockanchor.addEventListener("click", function() {
-                context.fillStyle = backgroundColor;
-                context.fillRect(100, 100, 400, 400);
-            });
-            //create class and set
+            colorBlockanchor.addEventListener("click", replaceColor);
 
+            //create class and set
             let blockAttr = document.createAttribute("class");
             blockAttr.value = "colorBlock";
             colorBlock.setAttributeNode(blockAttr);
@@ -71,12 +68,14 @@
             colorBlockanchor.appendChild(colorBlock);
             colorBlock.appendChild(colorBlockText);
             parent.appendChild(colorBlockanchor);
+            
+            function replaceColor() {
+                document.getElementById("demo").innerHTML = backgroundColor.toString();
+                context.fillStyle = backgroundColor;
+                context.fillRect(100, 100, 400, 400);
+            }
         }
-
-        function replaceColor(bg) {
-            context.fillStyle = bg;
-            context.fillRect(100, 100, 400, 400);
-        }
+        
         
         btn.addEventListener("click", function() {
             rgbText = "rgb(";
